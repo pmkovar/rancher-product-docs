@@ -37,8 +37,6 @@ All nodes added to the cluster must be able to interact with EC2 so that they ca
 
 While creating an xref:cluster-deployment/infra-providers/aws/aws.adoc[Amazon EC2 cluster], you must fill in the *IAM Instance Profile Name* (not ARN) of the created IAM role when creating the *Node Template*.
 
-While creating a xref:cluster-deployment/custom-clusters/custom-clusters.adoc[Custom cluster], you must manually attach the IAM role to the instance(s).
-
 IAM Policy for nodes with the `controlplane` role:
 
 [,json]
