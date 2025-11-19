@@ -29,6 +29,7 @@ The following storage provisioners are enabled by default:
 |===
 | Name | Plugin
 
+ifeval::["{build-type}" != "srfa"]
 | Amazon EBS Disk
 | `aws-ebs`
 
@@ -43,7 +44,11 @@ The following storage provisioners are enabled by default:
 
 | VMware vSphere Volume
 | `vsphere-volume`
-
+endif::[]
+ifeval::["{build-type}" == "srfa"]
+| Amazon EBS Disk
+| `aws-ebs`
+endif::[]
 | Local
 | `local`
 
