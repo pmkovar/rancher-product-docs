@@ -13,17 +13,11 @@ By default, the *Cloud Provider* option is set to `None`.
 
 The following cloud providers can be enabled:
 
-ifeval::["{build-type}" != "srfa"]
 * Amazon
 * Azure
 * GCE (Google Compute Engine)
 * vSphere
-endif::[]
-ifeval::["{build-type}" == "srfa"]
-* Amazon
-endif::[]
 
-ifeval::["{build-type}" != "srfa"]
 == Setting up the Amazon Cloud Provider
 
 For details on enabling the Amazon cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/amazon.adoc[].
@@ -48,10 +42,3 @@ For the custom cloud provider option, you can refer to the https://rancher.com/d
 
 * https://rke.docs.rancher.com/config-options/cloud-providers/vsphere[vSphere]
 * https://rancher.com/docs/rke/latest/en/config-options/cloud-providers/openstack/[OpenStack]
-endif::[]
-
-ifeval::["{build-type}" == "srfa"]
-== Setting up the Amazon Cloud Provider
-
-For details on enabling the Amazon cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/amazon.adoc[].
-endif::[]
