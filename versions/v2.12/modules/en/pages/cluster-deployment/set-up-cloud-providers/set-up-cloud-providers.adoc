@@ -26,15 +26,15 @@ endif::[]
 ifeval::["{build-type}" != "srfa"]
 == Setting up the Amazon Cloud Provider
 
-For details on enabling the Amazon cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/amazon.adoc[this page.]
+For details on enabling the Amazon cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/amazon.adoc[].
 
 == Setting up the Azure Cloud Provider
 
-For details on enabling the Azure cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/azure.adoc[this page.]
+For details on enabling the Azure cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/azure.adoc[].
 
 == Setting up the GCE Cloud Provider
 
-For details on enabling the Google Compute Engine cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/google-compute-engine.adoc[this page.]
+For details on enabling the Google Compute Engine cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/google-compute-engine.adoc[].
 
 == Setting up the VMware vSphere Cloud Provider
 
@@ -49,8 +49,9 @@ For the custom cloud provider option, you can refer to the https://rancher.com/d
 * https://rke.docs.rancher.com/config-options/cloud-providers/vsphere[vSphere]
 * https://rancher.com/docs/rke/latest/en/config-options/cloud-providers/openstack/[OpenStack]
 endif::[]
+
 ifeval::["{build-type}" == "srfa"]
 == Setting up the Amazon Cloud Provider
 
-For details on enabling the Amazon cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/amazon.adoc[this page.]
+For details on enabling the Amazon cloud provider, refer to xref:cluster-deployment/set-up-cloud-providers/amazon.adoc[].
 endif::[]
