@@ -30,11 +30,14 @@ jobs:
       - name: Install Pandoc
         run: sudo apt-get update && sudo apt-get install -y pandoc
 
+      - name: Create release notes directory
+        run: mkdir release-notes
+
       - name: Convert AsciiDoc to HTML
         run: |
           VERSION=${{ inputs.version }}
           INPUT_FILE="versions/${VERSION}/modules/en/pages/release-notes/${VERSION}.adoc"
-          OUTPUT_FILE="${VERSION}.html"
+          OUTPUT_FILE="release-notes/${VERSION}.html"
 
           if [ ! -f "$INPUT_FILE" ]; then
             echo "Error: Input file $INPUT_FILE not found."
@@ -42,12 +45,12 @@ jobs:
           fi
 
           asciidoctor -o "$OUTPUT_FILE" "$INPUT_FILE"
-        
+
       - name: Convert HTML to GitHub-Flavored Markdown
         run: |
           VERSION=${{ inputs.version }}
-          HTML_FILE="${VERSION}.html"
-          MARKDOWN_FILE="${VERSION}.md"
+          HTML_FILE="release-notes/${VERSION}.html"
+          MARKDOWN_FILE="release-notes/${VERSION}.md"
 
           pandoc --from html-native_divs \
                  --to gfm \
@@ -56,13 +59,9 @@ jobs:
                  "$HTML_FILE"
 
       - name: Push HTML and Markdown to release-notes branch
-        uses: ad-m/github-push-action@master
+        uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: release-notes
           force: true
-          tags: false
-          files: |
-            ${{ inputs.version }}.html
-            ${{ inputs.version }}.md
-          commit_message: 'docs: Add release notes for v${{ inputs.version }}'
+          directory: release-notes
