@@ -1,4 +1,3 @@
-# .github/workflows/generate-release.yml
 name: Generate and Store Release Notes
 
 on:
@@ -34,7 +33,7 @@ jobs:
       - name: Convert AsciiDoc to HTML
         run: |
           VERSION=${{ inputs.version }}
-          INPUT_FILE="versions/v${VERSION}/modules/en/pages/release-notes/${VERSION}.adoc"
+          INPUT_FILE="versions/${VERSION}/modules/en/pages/release-notes/${VERSION}.adoc"
           OUTPUT_FILE="${VERSION}.html"
 
           if [ ! -f "$INPUT_FILE" ]; then
