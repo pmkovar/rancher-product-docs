@@ -2,10 +2,22 @@
 ifeval::["{build-type}" != "srfa"]
 :page-languages: [en, zh]
 endif::[]
-:revdate: 2025-11-18
+:revdate: 2025-12-09
 :page-revdate: {revdate}
 
 == Current Version
+
+|===
+| Version | Release Notes | Support Matrix | Prime | Community
+
+| v2.13.0
+| xref:release-notes/v2.13.adoc[View] / https://github.com/rancher/rancher/releases/tag/v2.13.0[GitHub Release]
+| N/A
+| N/A
+| N/A
+|===
+
+== Past Versions
 
 |===
 | Version | Release Notes | Support Matrix | Prime | Community
@@ -15,12 +27,6 @@ endif::[]
 | N/A
 | &#10003;
 | N/A
-|===
-
-== Past Versions
-
-|===
-| Version | Release Notes | Support Matrix | Prime | Community
 
 | v2.12.3
 | https://github.com/rancher/rancher/releases/tag/v2.12.3[View]

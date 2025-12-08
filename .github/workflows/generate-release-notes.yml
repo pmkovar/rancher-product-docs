@@ -1,0 +1,69 @@
+# .github/workflows/generate-release.yml
+name: Generate and Store Release Notes
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The release version (e.g., v2.13)'
+        required: true
+        default: 'v2.13'
+
+jobs:
+  build-and-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to create the release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby for Asciidoctor
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1' # Or any recent version
+          bundler-cache: true
+
+      - name: Install Asciidoctor
+        run: gem install asciidoctor
+
+      - name: Install Pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Convert AsciiDoc to HTML
+        run: |
+          VERSION=${{ inputs.version }}
+          INPUT_FILE="versions/v${VERSION}/modules/en/pages/release-notes/${VERSION}.adoc"
+          OUTPUT_FILE="${VERSION}.html"
+
+          if [ ! -f "$INPUT_FILE" ]; then
+            echo "Error: Input file $INPUT_FILE not found."
+            exit 1
+          fi
+
+          asciidoctor -o "$OUTPUT_FILE" "$INPUT_FILE"
+        
+      - name: Convert HTML to GitHub-Flavored Markdown
+        run: |
+          VERSION=${{ inputs.version }}
+          HTML_FILE="${VERSION}.html"
+          MARKDOWN_FILE="${VERSION}.md"
+
+          pandoc --from html-native_divs \
+                 --to gfm \
+                 --lua-filter=./.github/workflows/filters/admonition-filter.lua \
+                 --output "$MARKDOWN_FILE" \
+                 "$HTML_FILE"
+
+      - name: Push HTML and Markdown to release-notes branch
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: release-notes
+          force: true
+          tags: false
+          files: |
+            ${{ inputs.version }}.html
+            ${{ inputs.version }}.md
+          commit_message: 'docs: Add release notes for v${{ inputs.version }}'
