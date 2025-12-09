@@ -27,36 +27,39 @@ jobs:
       - name: Install Asciidoctor
         run: gem install asciidoctor
 
-      - name: Install Pandoc
+      - name: Install latest Pandoc
         uses: r-lib/actions/setup-pandoc@v2
+        with:
+          pandoc-version: 'latest'
 
       - name: Create release notes build directory
         run: mkdir release-notes-build
 
-      - name: Convert AsciiDoc to HTML
+      - name: Convert AsciiDoc to DocBook
         run: |
           VERSION=${{ inputs.version }}
           INPUT_FILE="versions/${VERSION}/modules/en/pages/release-notes/${VERSION}.adoc"
-          OUTPUT_FILE="release-notes-build/${VERSION}.html"
+          OUTPUT_FILE="release-notes-build/${VERSION}.xml"
 
           if [ ! -f "$INPUT_FILE" ]; then
             echo "Error: Input file $INPUT_FILE not found."
             exit 1
           fi
 
-          asciidoctor -o "$OUTPUT_FILE" "$INPUT_FILE"
+          asciidoctor -b docbook5 -o "$OUTPUT_FILE" "$INPUT_FILE"
 
-      - name: Convert HTML to GitHub-Flavored Markdown
+      - name: Convert DocBook to GitHub-Flavored Markdown
         run: |
           VERSION=${{ inputs.version }}
-          HTML_FILE="release-notes-build/${VERSION}.html"
+          XML_FILE="release-notes-build/${VERSION}.xml"
           MARKDOWN_FILE="release-notes-build/${VERSION}.md"
 
-          pandoc --from html-native_divs \
+          pandoc -v
+          pandoc --from docbook \
                  --to gfm \
-                 --lua-filter=./.github/workflows/filters/admonition-filter.lua \
                  --output "$MARKDOWN_FILE" \
-                 "$HTML_FILE"
+                 "$XML_FILE"
+        #        --lua-filter=./.github/workflows/filters/admonition-filter.lua \
 
       - name: Deploy to release-notes-build branch
         uses: peaceiris/actions-gh-pages@v4
