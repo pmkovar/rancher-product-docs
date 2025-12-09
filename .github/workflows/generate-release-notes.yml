@@ -8,10 +8,6 @@ on:
         required: true
         default: 'v2.13'
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   build-and-commit:
     runs-on: ubuntu-latest
@@ -32,7 +28,7 @@ jobs:
         run: gem install asciidoctor
 
       - name: Install Pandoc
-        run: sudo apt-get update && sudo apt-get install -y pandoc
+        uses: r-lib/actions/setup-pandoc@v2
 
       - name: Create release notes build directory
         run: mkdir release-notes-build
@@ -48,7 +44,7 @@ jobs:
             exit 1
           fi
 
-          asciidoctor -v -o "$OUTPUT_FILE" "$INPUT_FILE"
+          asciidoctor -o "$OUTPUT_FILE" "$INPUT_FILE"
 
       - name: Convert HTML to GitHub-Flavored Markdown
         run: |
@@ -62,17 +58,11 @@ jobs:
                  --output "$MARKDOWN_FILE" \
                  "$HTML_FILE"
 
-      - name: Commit files
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add release-notes-build/
-          git commit -m "Add changes"
-
-      - name: Push HTML and Markdown to release-notes-build branch
-        uses: ad-m/github-push-action@v0.8.0
+      - name: Deploy to release-notes-build branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release-notes-build
-          force: true
-          directory: release-notes-build
+          publish_dir: ./release-notes-build
+          publish_branch: release-notes-build
+          force_orphan: true
+          commit_message: "Generate Release Notes for ${{ inputs.version }}"
