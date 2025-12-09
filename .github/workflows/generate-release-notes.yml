@@ -12,7 +12,7 @@ jobs:
   build-and-commit:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Needed to create the release
+      contents: write # Needed to push to branch
 
     steps:
       - name: Checkout code
@@ -46,7 +46,7 @@ jobs:
             exit 1
           fi
 
-          asciidoctor -b docbook5 -o "$OUTPUT_FILE" "$INPUT_FILE"
+          asciidoctor -v -b docbook5 -o "$OUTPUT_FILE" "$INPUT_FILE"
 
       - name: Convert DocBook to GitHub-Flavored Markdown
         run: |
@@ -59,7 +59,6 @@ jobs:
                  --to gfm \
                  --output "$MARKDOWN_FILE" \
                  "$XML_FILE"
-        #        --lua-filter=./.github/workflows/filters/admonition-filter.lua \
 
       - name: Deploy to release-notes-build branch
         uses: peaceiris/actions-gh-pages@v4
