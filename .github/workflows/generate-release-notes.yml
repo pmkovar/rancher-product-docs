@@ -8,6 +8,10 @@ on:
         required: true
         default: 'v2.13'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build-and-commit:
     runs-on: ubuntu-latest
@@ -30,27 +34,27 @@ jobs:
       - name: Install Pandoc
         run: sudo apt-get update && sudo apt-get install -y pandoc
 
-      - name: Create release notes directory
-        run: mkdir release-notes
+      - name: Create release notes build directory
+        run: mkdir release-notes-build
 
       - name: Convert AsciiDoc to HTML
         run: |
           VERSION=${{ inputs.version }}
           INPUT_FILE="versions/${VERSION}/modules/en/pages/release-notes/${VERSION}.adoc"
-          OUTPUT_FILE="release-notes/${VERSION}.html"
+          OUTPUT_FILE="release-notes-build/${VERSION}.html"
 
           if [ ! -f "$INPUT_FILE" ]; then
             echo "Error: Input file $INPUT_FILE not found."
             exit 1
           fi
 
-          asciidoctor -o "$OUTPUT_FILE" "$INPUT_FILE"
+          asciidoctor -v -o "$OUTPUT_FILE" "$INPUT_FILE"
 
       - name: Convert HTML to GitHub-Flavored Markdown
         run: |
           VERSION=${{ inputs.version }}
-          HTML_FILE="release-notes/${VERSION}.html"
-          MARKDOWN_FILE="release-notes/${VERSION}.md"
+          HTML_FILE="release-notes-build/${VERSION}.html"
+          MARKDOWN_FILE="release-notes-build/${VERSION}.md"
 
           pandoc --from html-native_divs \
                  --to gfm \
@@ -58,10 +62,16 @@ jobs:
                  --output "$MARKDOWN_FILE" \
                  "$HTML_FILE"
 
-      - name: Push HTML and Markdown to release-notes branch
+      - name: Commit files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Add changes"
+
+      - name: Push HTML and Markdown to release-notes-build branch
         uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release-notes
+          branch: release-notes-build
           force: true
-          directory: release-notes
+          directory: release-notes-build
