@@ -76,13 +76,15 @@ jobs:
 
           PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --base "$BASE_BRANCH" --json number,headRepositoryOwner --jq ".[] | select(.headRepositoryOwner.login == \"$FORK_OWNER\") | .number" | head -n 1)
 
-          # Search for the release maintenance issue
-          ISSUE_NUMBER=$(gh issue list --repo "$GH_REPO" --search "\"$VERSION\" \"Rancher Manager Release Maintenance Task Checklist\" in:title is:open" --json number --jq '.[0].number')
-
           PR_BODY="Automated release maintenance updates for version $VERSION."$'\n'"Command executed: \`./release-maintenance.sh -t \"$TAG\" -d \"$DATE\" --prime \"$PRIME\" --community \"$COMMUNITY\"\`"
 
-          if [[ -n "$ISSUE_NUMBER" && "$ISSUE_NUMBER" != "null" ]]; then
-            PR_BODY="$PR_BODY"$'\n\n'"Relates to #$ISSUE_NUMBER"
+          if [[ "${GH_REPO%%/*}" != "$FORK_OWNER" ]]; then
+            # Search for the release maintenance issue
+            ISSUE_NUMBER=$(gh issue list --repo "$GH_REPO" --search "\"$VERSION\" \"Rancher Manager Release Maintenance Task Checklist\" in:title is:open" --json number --jq '.[0].number')
+
+            if [[ -n "$ISSUE_NUMBER" && "$ISSUE_NUMBER" != "null" ]]; then
+              PR_BODY="$PR_BODY"$'\n\n'"Relates to #$ISSUE_NUMBER"
+            fi
           fi
 
           if [[ -n "$PR_NUMBER" && "$PR_NUMBER" != "null" ]]; then
