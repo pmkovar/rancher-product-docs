@@ -98,4 +98,6 @@ jobs:
             PR_NUMBER=${PR_URL##*/}
           fi
 
-          gh api -X PATCH "repos/${GH_REPO}/pulls/${PR_NUMBER}" -f maintainer_can_modify=true
+          if [[ "${GH_REPO%%/*}" != "$FORK_OWNER" ]]; then
+            gh api -X PATCH "repos/${GH_REPO}/pulls/${PR_NUMBER}" -f maintainer_can_modify=true
+          fi
