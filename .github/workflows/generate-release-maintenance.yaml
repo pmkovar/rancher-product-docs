@@ -80,9 +80,12 @@ jobs:
               --title "$VERSION - Release Maintenance" \
               --body "Automated release maintenance updates for version $VERSION."$'\n'"Command executed: \`./release-maintenance.sh -t \"$TAG\" -d \"$DATE\" --prime \"$PRIME\" --community \"$COMMUNITY\"\`"
           else
-            gh pr create \
+            PR_URL=$(gh pr create \
               --title "$VERSION - Release Maintenance" \
               --body "Automated release maintenance updates for version $VERSION."$'\n'"Command executed: \`./release-maintenance.sh -t \"$TAG\" -d \"$DATE\" --prime \"$PRIME\" --community \"$COMMUNITY\"\`" \
               --base "$BASE_BRANCH" \
-              --head "${FORK_OWNER}:${BRANCH_NAME}"
+              --head "${FORK_OWNER}:${BRANCH_NAME}")
+            PR_NUMBER=${PR_URL##*/}
           fi
+
+          gh api -X PATCH "repos/${GH_REPO}/pulls/${PR_NUMBER}" -f maintainer_can_modify=true
