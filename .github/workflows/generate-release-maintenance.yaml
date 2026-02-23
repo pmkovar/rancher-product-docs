@@ -17,6 +17,10 @@ on:
         description: 'Is this version available in Community? (Default: y)'
         required: false
         default: 'y'
+      fork_owner:
+        description: 'GitHub username of the fork owner (defaults to current user)'
+        required: false
+        default: ''
 
 jobs:
   build-and-commit:
@@ -39,6 +43,7 @@ jobs:
           DATE: ${{ inputs.release_date }}
           PRIME: ${{ inputs.prime }}
           COMMUNITY: ${{ inputs.community }}
+          FORK_OWNER: ${{ inputs.fork_owner || github.actor }}
         run: |
           # Extract version from tag (e.g., v2.11.10-alpha1 -> v2.11.10)
           VERSION=${TAG%%-*}
@@ -56,9 +61,11 @@ jobs:
           git checkout -b "$BRANCH_NAME"
           git add .
           git commit -m "$VERSION - Release Maintenance"
-          git push -f origin "$BRANCH_NAME"
 
-          PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --base "$BASE_BRANCH" --json number --jq '.[0].number')
+          git remote add fork "https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${FORK_OWNER}/rancher-product-docs.git"
+          git push -f fork "$BRANCH_NAME"
+
+          PR_NUMBER=$(gh pr list --head "${FORK_OWNER}:${BRANCH_NAME}" --base "$BASE_BRANCH" --json number --jq '.[0].number')
 
           if [[ -n "$PR_NUMBER" && "$PR_NUMBER" != "null" ]]; then
             gh pr edit "$PR_NUMBER" \
@@ -69,5 +76,5 @@ jobs:
               --title "$VERSION - Release Maintenance" \
               --body "Automated release maintenance updates for version $VERSION."$'\n'"Command executed: \`./release-maintenance.sh -t \"$TAG\" -d \"$DATE\" --prime \"$PRIME\" --community \"$COMMUNITY\"\`" \
               --base "$BASE_BRANCH" \
-              --head "$BRANCH_NAME"
+              --head "${FORK_OWNER}:${BRANCH_NAME}"
           fi
