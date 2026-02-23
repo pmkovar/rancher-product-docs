@@ -49,6 +49,14 @@ jobs:
           VERSION=${TAG%%-*}
           BRANCH_NAME="${VERSION}-maintenance"
 
+          # Determine the target repository for the PR (upstream if fork, else current)
+          TARGET_REPO=$(gh repo view --json parent --jq '.parent.nameWithOwner')
+          if [[ -z "$TARGET_REPO" || "$TARGET_REPO" == "null" ]]; then
+            TARGET_REPO="${{ github.repository }}"
+          fi
+          export GH_REPO="$TARGET_REPO"
+          echo "Targeting repository: $GH_REPO"
+
           if git ls-remote --heads origin "$VERSION" | grep -q "$VERSION"; then
             BASE_BRANCH="$VERSION"
           else
@@ -65,7 +73,7 @@ jobs:
           git remote add fork "https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${FORK_OWNER}/rancher-product-docs.git"
           git push -f fork "$BRANCH_NAME"
 
-          PR_NUMBER=$(gh pr list --head "${FORK_OWNER}:${BRANCH_NAME}" --base "$BASE_BRANCH" --json number --jq '.[0].number')
+          PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --base "$BASE_BRANCH" --json number,headRepositoryOwner --jq ".[] | select(.headRepositoryOwner.login == \"$FORK_OWNER\") | .number" | head -n 1)
 
           if [[ -n "$PR_NUMBER" && "$PR_NUMBER" != "null" ]]; then
             gh pr edit "$PR_NUMBER" \
