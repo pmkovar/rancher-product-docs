@@ -25,6 +25,7 @@ jobs:
       contents: write
       pull-requests: write
       issues: read
+      id-token: write
 
     steps:
       - name: Checkout code
@@ -33,9 +34,23 @@ jobs:
       - name: Generate Release Maintenance
         run: ./release-maintenance.sh -t "${{ inputs.release_tag }}" -d "${{ inputs.release_date }}" --prime "${{ inputs.prime }}" --community "${{ inputs.community }}"
 
+      - name: Read App Secrets
+        uses: rancher-eio/read-vault-secrets@main
+        with:
+          secrets: |
+            secret/data/github/repo/${{ github.repository }}/github/app-credentials appId | APP_ID ;
+            secret/data/github/repo/${{ github.repository }}/github/app-credentials privateKey | PRIVATE_KEY
+
+      - name: Create App Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ env.APP_ID }}
+          private-key: ${{ env.PRIVATE_KEY }}
+
       - name: Create Pull Request
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           TAG: ${{ inputs.release_tag }}
           DATE: ${{ inputs.release_date }}
           PRIME: ${{ inputs.prime }}
