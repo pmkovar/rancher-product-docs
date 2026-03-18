@@ -6,6 +6,14 @@ endif::[]
 :page-revdate: {revdate}
 :community-path: reference-guides/cluster-configuration/rancher-server-configuration/gke-cluster-configuration/index.adoc 
 :product-path: cluster-deployment/hosted-kubernetes/gke/configuration.adoc
+ifeval::["{build-type}" != "community"]
+:xref-logging: xref:observability/logging/logging.adoc
+:xref-gke-private-clusters: xref:cluster-deployment/hosted-kubernetes/gke/private-clusters.adoc
+endif::[]
+ifeval::["{build-type}" == "community"]
+:xref-logging: xref:integrations-in-rancher/logging/index.adoc
+:xref-gke-private-clusters: xref:reference-guides/cluster-configuration/rancher-server-configuration/gke-cluster-configuration/gke-private-clusters.adoc
+endif::[]
 
 == Cluster Location
 
@@ -112,7 +120,7 @@ _Mutable: no_
 [CAUTION]
 ====
 
-Private clusters require additional planning and configuration outside of Rancher. Refer to the xref:cluster-deployment/hosted-kubernetes/gke/private-clusters.adoc[private cluster guide].
+Private clusters require additional planning and configuration outside of Rancher. Refer to the {xref-gke-private-clusters}[private cluster guide].
 ====
 
 
@@ -123,7 +131,7 @@ Assign nodes only internal IP addresses. Private cluster nodes cannot access the
 [CAUTION]
 ====
 
-Private clusters require additional planning and configuration outside of Rancher. Refer to the xref:cluster-deployment/hosted-kubernetes/gke/private-clusters.adoc[private cluster guide].
+Private clusters require additional planning and configuration outside of Rancher. Refer to the {xref-gke-private-clusters}[private cluster guide].
 ====
 
 
@@ -210,7 +218,7 @@ The node operating system image. For more information for the node image options
 [NOTE]
 ====
 
-The default option is "Container-Optimized OS with Docker". The read-only filesystem on GCP's Container-Optimized OS is not compatible with the xref:[legacy logging] implementation in Rancher. If you need to use the legacy logging feature, select "Ubuntu with Docker" or "Ubuntu with Containerd". The xref:observability/logging/logging.adoc[current logging feature] is compatible with the Container-Optimized OS image.
+The default option is "Container-Optimized OS with Docker". The read-only filesystem on GCP's Container-Optimized OS is not compatible with the xref:[legacy logging] implementation in Rancher. If you need to use the legacy logging feature, select "Ubuntu with Docker" or "Ubuntu with Containerd". The {xref-logging}[current logging feature] is compatible with the Container-Optimized OS image.
 ====
 
 

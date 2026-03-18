@@ -4,6 +4,18 @@
 :page-revdate: {revdate}
 :community-path: getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster/upgrades.adoc 
 :product-path: installation-and-upgrade/upgrades.adoc
+ifeval::["{build-type}" != "community"]
+:xref-air-gap: xref:installation-and-upgrade/other-installation-methods/air-gapped/air-gapped.adoc
+:xref-backup-cluster: xref:rancher-admin/back-up-restore-and-disaster-recovery/back-up.adoc
+:xref-air-gap-publish-images: xref:installation-and-upgrade/other-installation-methods/air-gapped/publish-images.adoc
+:xref-helm-chart-in-rancher: xref:cluster-admin/helm-charts-in-rancher/helm-charts-in-rancher.adoc
+endif::[]
+ifeval::["{build-type}" == "community"]
+:xref-air-gap: xref:getting-started/installation-and-upgrade/other-installation-methods/air-gapped-helm-cli-install/index.adoc
+:xref-backup-cluster: xref:how-to-guides/new-user-guides/backup-restore-and-disaster-recovery/back-up-rancher.adoc
+:xref-air-gap-publish-images: xref:getting-started/installation-and-upgrade/other-installation-methods/air-gapped-helm-cli-install/publish-images.adoc
+:xref-helm-chart-in-rancher: xref:how-to-guides/new-user-guides/helm-charts-in-rancher/index.adoc
+endif::[]
 
 The following instructions will guide you through upgrading a Rancher server that was installed on a Kubernetes cluster with Helm. These steps also apply to air-gapped installs with Helm.
 
@@ -35,11 +47,11 @@ For migration of installs started with Helm 2, refer to the official https://hel
 
 === For air-gapped installs: Populate private registry
 
-For xref:installation-and-upgrade/other-installation-methods/air-gapped/air-gapped.adoc[air-gapped installs only,] collect and populate images for the new Rancher server version. Follow the guide to xref:installation-and-upgrade/other-installation-methods/air-gapped/publish-images.adoc[populate your private registry] with the images for the Rancher version that you want to upgrade to.
+For {xref-air-gap}[air-gapped installs only,] collect and populate images for the new Rancher server version. Follow the guide to {xref-air-gap-publish-images}[populate your private registry] with the images for the Rancher version that you want to upgrade to.
 
 === For upgrades with cert-manager older than 0.8.0
 
-https://community.letsencrypt.org/t/blocking-old-cert-manager-versions/98753[Let's Encrypt will be blocking cert-manager instances older than 0.8.0 starting November 1st 2019.] Upgrade cert-manager to the latest version by following xref:installation-and-upgrade/resources/upgrade-cert-manager.adoc[these instructions.]
+https://community.letsencrypt.org/t/blocking-old-cert-manager-versions/98753[Let's Encrypt will be blocking cert-manager instances older than 0.8.0 starting November 1st 2019.] Upgrade cert-manager to the latest version by following {xref-upgrade-certmanager}[these instructions.]
 
 == Upgrade Outline
 
@@ -47,7 +59,7 @@ Follow the steps to upgrade Rancher server:
 
 === 1. Back up Your Kubernetes Cluster that is Running Rancher Server
 
-Use the xref:rancher-admin/back-up-restore-and-disaster-recovery/back-up.adoc[backup application] to back up Rancher.
+Use the {xref-backup-cluster}[backup application] to back up Rancher.
 
 You'll use the backup as a restore point if something goes wrong during upgrade.
 
@@ -84,7 +96,21 @@ You can fetch the chart for the specific version you are upgrading to by adding 
  helm fetch rancher-prime/rancher --version=2.6.8
 ----
 
-=== 3. Upgrade Rancher
+=== 3. Review Rancher Feature Chart Versions Before Upgrade
+
+Rancher feature charts follow specific release lines that align with Rancher versions. Major versions of feature charts correspond to Rancher minor versions and follow a defined versioning scheme.
+
+Before upgrading Rancher, review any installed Rancher feature charts and upgrade them to the latest available version within their current chart release line. This helps ensure compatibility and avoids potential issues during or after the Rancher upgrade.
+
+To review installed feature charts:
+
+1. In the Rancher UI, go to **Apps & Marketplace**.
+2. Select **Installed Apps**.
+3. Review the chart versions and upgrade to the latest patch release within the same chart major version if needed.
+
+For more information, see the {xref-helm-chart-in-rancher}#_versioning_scheme[Helm Charts in Rancher – Versioning Scheme].
+
+=== 4. Upgrade Rancher
 
 This section describes how to upgrade normal (Internet-connected) or air-gapped installations of Rancher with Helm.
 
@@ -125,7 +151,7 @@ hostname: rancher.my.org
 ====
 
 
-If you are upgrading cert-manager to the latest version from v1.5 or below, follow the xref:installation-and-upgrade/resources/upgrade-cert-manager.adoc#_option_c_upgrade_cert_manager_from_versions_15_and_below[cert-manager upgrade docs] to learn how to upgrade cert-manager without needing to perform an uninstall or reinstall of Rancher. Otherwise, follow the <<_steps_to_upgrade_rancher,steps to upgrade Rancher>> below.
+If you are upgrading cert-manager to the latest version from v1.5 or below, follow the {xref-upgrade-certmanager}#_option_c_upgrade_cert_manager_from_versions_15_and_below[cert-manager upgrade docs] to learn how to upgrade cert-manager without needing to perform an uninstall or reinstall of Rancher. Otherwise, follow the <<_steps_to_upgrade_rancher,steps to upgrade Rancher>> below.
 
 ==== Steps to Upgrade Rancher
 
@@ -177,7 +203,7 @@ Alternatively, it's possible to export the current values to a file and referenc
    --version=2.6.8
 ----
 
-=== 4. Verify the Upgrade
+=== 5. Verify the Upgrade
 
 Log into Rancher to confirm that the upgrade succeeded.
 

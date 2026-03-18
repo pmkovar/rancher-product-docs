@@ -8,9 +8,17 @@ endif::[]
 :product-path: faq/technical-items.adoc
 ifeval::["{build-type}" != "community"]
 :xref-rke2-config: xref:cluster-deployment/configuration/rke2.adoc
+:xref-set-up-cloud-providers: xref:cluster-deployment/set-up-cloud-providers/set-up-cloud-providers.adoc
+:xref-clean-cluster-nodes: xref:cluster-admin/manage-clusters/clean-cluster-nodes.adoc
+:xref-k3s-config: xref:cluster-deployment/configuration/k3s.adoc
+:xref-logging-troubleshooting: xref:observability/logging/troubleshooting.adoc
 endif::[]
 ifeval::["{build-type}" == "community"]
 :xref-rke2-config: xref:reference-guides/cluster-configuration/rancher-server-configuration/rke2-cluster-configuration.adoc
+:xref-set-up-cloud-providers: xref:how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers/index.adoc
+:xref-clean-cluster-nodes: xref:how-to-guides/new-user-guides/manage-clusters/clean-cluster-nodes.adoc
+:xref-k3s-config: xref:reference-guides/cluster-configuration/rancher-server-configuration/k3s-cluster-configuration.adoc
+:xref-logging-troubleshooting: xref:troubleshooting/other-troubleshooting-tips/logging.adoc
 endif::[]
 
 == How can I reset the administrator password?
@@ -46,7 +54,7 @@ Kubernetes install (Helm):
 
 == How can I enable debug logging?
 
-See xref:observability/logging/troubleshooting.adoc[Troubleshooting: Logging]
+See {xref-logging-troubleshooting}[Troubleshooting: Logging]
 
 == My ClusterIP does not respond to ping
 
@@ -58,7 +66,7 @@ Node Templates can be accessed by opening your account menu (top right) and sele
 
 == Why is my Layer-4 Load Balancer in `Pending` state?
 
-The Layer-4 Load Balancer is created as `type: LoadBalancer`. In Kubernetes, this needs a cloud provider or controller that can satisfy these requests, otherwise these will be in `Pending` state forever. More information can be found on xref:cluster-deployment/set-up-cloud-providers/set-up-cloud-providers.adoc[Cloud Providers] or https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/[Create External Load Balancer]
+The Layer-4 Load Balancer is created as `type: LoadBalancer`. In Kubernetes, this needs a cloud provider or controller that can satisfy these requests, otherwise these will be in `Pending` state forever. More information can be found on {xref-set-up-cloud-providers}[Cloud Providers] or https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/[Create External Load Balancer]
 
 == Where is the state of Rancher stored?
 
@@ -90,13 +98,13 @@ The UI consists of static files, and works based on responses of the API. That m
 
 A node is required to have a static IP configured (or a reserved IP via DHCP). If the IP of a node has changed, you will have to remove it from the cluster and readd it. After it is removed, Rancher will update the cluster to the correct state. If the cluster is no longer in `Provisioning` state, the node is removed from the cluster.
 
-When the IP address of the node changed, Rancher lost connection to the node, so it will be unable to clean the node properly. See xref:cluster-admin/manage-clusters/clean-cluster-nodes.adoc[Cleaning cluster nodes] to clean the node.
+When the IP address of the node changed, Rancher lost connection to the node, so it will be unable to clean the node properly. See {xref-clean-cluster-nodes}[Cleaning cluster nodes] to clean the node.
 
 When the node is removed from the cluster, and the node is cleaned, you can readd the node to the cluster.
 
 == How can I add more arguments/binds/environment variables to Kubernetes components in a Rancher Launched Kubernetes cluster?
 
-You can add more arguments/binds/environment variables via the respective {xref-rke2-config}#_cluster_configuration[RKE2 Config File] or xref:cluster-deployment/configuration/k3s.adoc#_cluster_configuration[K3s Config File].
+You can add more arguments/binds/environment variables via the respective {xref-rke2-config}#_cluster_configuration[RKE2 Config File] or {xref-k3s-config}#_cluster_configuration[K3s Config File].
 
 == How do I check if my certificate chain is valid?
 

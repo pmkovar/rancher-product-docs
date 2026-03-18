@@ -8,10 +8,20 @@
 ifeval::["{build-type}" != "community"]
 :xref-user-api-keys: rancher-admin/users/settings/api-keys.adoc
 :xref-cluster-deployment: xref:cluster-deployment/cluster-deployment.adoc
+:xref-projects-and-namespaces: xref:cluster-admin/manage-clusters/projects-and-namespaces.adoc
+:xref-workloads-and-pods: xref:cluster-admin/kubernetes-resources/workloads-and-pods/workloads-and-pods.adoc
+:xref-helm-charts-in-rancher: xref:cluster-admin/helm-charts-in-rancher/helm-charts-in-rancher.adoc
+:xref-nodes-nodepools: xref:cluster-admin/manage-clusters/nodes-and-node-pools.adoc
+:xref-namespaces: xref:cluster-admin/namespaces.adoc
 endif::[]
 ifeval::["{build-type}" == "community"]
 :xref-user-api-keys: xref:reference-guides/user-settings/api-keys.adoc
 :xref-cluster-deployment: xref:how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/index.adoc
+:xref-projects-and-namespaces: xref:how-to-guides/new-user-guides/manage-clusters/projects-and-namespaces.adoc
+:xref-workloads-and-pods: xref:how-to-guides/new-user-guides/kubernetes-resources-setup/workloads-and-pods/index.adoc
+:xref-helm-charts-in-rancher: xref:how-to-guides/new-user-guides/helm-charts-in-rancher/index.adoc
+:xref-nodes-nodepools: xref:how-to-guides/new-user-guides/manage-clusters/nodes-and-node-pools.adoc
+:xref-namespaces: xref:how-to-guides/new-user-guides/manage-namespaces.adoc
 endif::[]
 
 The Rancher CLI (Command Line Interface) is a unified tool that you can use to interact with Rancher. With this tool, you can operate Rancher using a command line rather than the GUI.
@@ -44,7 +54,7 @@ If Rancher Server uses a self-signed certificate, Rancher CLI prompts you to con
 
 == Project Selection
 
-Before you can perform any commands, you must select a Rancher project to perform those commands against. To select a xref:cluster-admin/manage-clusters/projects-and-namespaces.adoc[project] to work on, use the command `./rancher context switch`. When you enter this command, a list of available projects displays. Enter a number to choose your project.
+Before you can perform any commands, you must select a Rancher project to perform those commands against. To select a {xref-projects-and-namespaces}[project] to work on, use the command `./rancher context switch`. When you enter this command, a list of available projects displays. Enter a number to choose your project.
 
 *Example: `./rancher context switch` Output*
 
@@ -78,19 +88,19 @@ The following commands are available for use in Rancher CLI.
 | Performs operations on catalog applications (i.e., individual https://docs.helm.sh/developing_charts/[Helm charts]) or Rancher charts.
 
 | `catalog`
-| Performs operations on xref:cluster-admin/helm-charts-in-rancher/helm-charts-in-rancher.adoc[catalogs].
+| Performs operations on {xref-helm-charts-in-rancher}[catalogs].
 
 | `clusters, [cluster]`
 | Performs operations on your {xref-cluster-deployment}[clusters].
 
 | `context`
-| Switches between Rancher xref:cluster-admin/manage-clusters/projects-and-namespaces.adoc[projects]. For an example, see <<_project_selection,Project Selection>>.
+| Switches between Rancher {xref-projects-and-namespaces}[projects]. For an example, see <<_project_selection,Project Selection>>.
 
 | `globaldns`
 | Performs operations on global DNS providers and entries.
 
 | `inspect [OPTIONS] [RESOURCEID RESOURCENAME]`
-| Displays details about https://kubernetes.io/docs/reference/kubectl/cheatsheet/#resource-types[Kubernetes resources] or Rancher resources (i.e.: xref:cluster-admin/manage-clusters/projects-and-namespaces.adoc[projects] and xref:cluster-admin/kubernetes-resources/workloads-and-pods/workloads-and-pods.adoc[workloads]). Specify resources by name or ID.
+| Displays details about https://kubernetes.io/docs/reference/kubectl/cheatsheet/#resource-types[Kubernetes resources] or Rancher resources (i.e.: {xref-projects-and-namespaces}[projects] and {xref-workloads-and-pods}[workloads]). Specify resources by name or ID.
 
 | `kubectl`
 | Runs https://kubernetes.io/docs/reference/kubectl/overview/#operations[kubectl commands].
@@ -105,16 +115,16 @@ The following commands are available for use in Rancher CLI.
 | Performs operations with multi-cluster apps.
 
 | `namespaces, [namespace]`
-| Performs operations on xref:cluster-admin/namespaces.adoc[namespaces].
+| Performs operations on {xref-namespaces}[namespaces].
 
 | `nodes, [node]`
-| Performs operations on xref:cluster-admin/manage-clusters/nodes-and-node-pools.adoc[nodes].
+| Performs operations on {xref-nodes-nodepools}[nodes].
 
 | `projects, [project]`
-| Performs operations on xref:cluster-admin/manage-clusters/projects-and-namespaces.adoc[projects].
+| Performs operations on {xref-projects-and-namespaces}[projects].
 
 | `ps`
-| Displays xref:cluster-admin/kubernetes-resources/workloads-and-pods/workloads-and-pods.adoc[workloads] in a project.
+| Displays {xref-workloads-and-pods}[workloads] in a project.
 
 | `server`
 | Performs operations for the server.
@@ -146,4 +156,4 @@ All commands accept the `--help` flag, which documents each command's usage.
 
 == Limitations
 
-The Rancher CLI *cannot* be used to install xref:cluster-admin/helm-charts-in-rancher/helm-charts-in-rancher.adoc[dashboard apps or Rancher feature charts].
+The Rancher CLI *cannot* be used to install {xref-helm-charts-in-rancher}[dashboard apps or Rancher feature charts].

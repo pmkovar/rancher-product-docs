@@ -9,9 +9,15 @@ endif::[]
 :experimental:
 ifeval::["{build-type}" != "community"]
 :xref-cluster-project-roles: xref:rancher-admin/users/authn-and-authz/manage-role-based-access-control-rbac/cluster-and-project-roles.adoc
+:xref-projects-and-namespaces: xref:cluster-admin/manage-clusters/projects-and-namespaces.adoc
+:xref-custom-roles: xref:rancher-admin/users/authn-and-authz/manage-role-based-access-control-rbac/custom-roles.adoc
+:xref-locked-roles: xref:rancher-admin/users/authn-and-authz/manage-role-based-access-control-rbac/locked-roles.adoc
 endif::[]
 ifeval::["{build-type}" == "community"]
 :xref-cluster-project-roles: xref:how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/manage-role-based-access-control-rbac/cluster-and-project-roles.adoc
+:xref-projects-and-namespaces: xref:how-to-guides/new-user-guides/manage-clusters/projects-and-namespaces.adoc
+:xref-custom-roles: xref:how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/manage-role-based-access-control-rbac/custom-roles.adoc
+:xref-locked-roles: xref:how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/manage-role-based-access-control-rbac/locked-roles.adoc
 endif::[]
 
 If you want to provide a user with access and permissions to _specific_ projects and resources within a cluster, assign the user a project membership.
@@ -27,7 +33,7 @@ Want to provide a user with access to _all_ projects within a cluster? See {xref
 
 == Adding Members to a New Project
 
-You can add members to a project as you create it (recommended if possible). For details on creating a new project, refer to the xref:cluster-admin/manage-clusters/projects-and-namespaces.adoc[cluster administration section.]
+You can add members to a project as you create it (recommended if possible). For details on creating a new project, refer to the {xref-projects-and-namespaces}[cluster administration section.]
 
 == Adding Members to an Existing Project
 
@@ -73,8 +79,8 @@ If you are logged in as a local user, external users do not display in your sear
  ** Users assigned the `Owner` or `Member` role for a project automatically inherit the `namespace creation` role. However, this role is a https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole[Kubernetes ClusterRole], meaning its scope extends to all projects in the cluster. Therefore, users explicitly assigned the `Owner` or `Member` role for a project can create or delete namespaces in other projects they're assigned to, even with only the `Read Only` role assigned.
  ** By default, the Rancher role of `project-member` inherits from the `Kubernetes-edit` role, and the `project-owner` role inherits from the `Kubernetes-admin` role. As such, both `project-member` and `project-owner` roles will allow for namespace management, including the ability to create and delete namespaces.
  ** For `Custom` roles, you can modify the list of individual roles available for assignment.
-  *** To add roles to the list, xref:rancher-admin/users/authn-and-authz/manage-role-based-access-control-rbac/custom-roles.adoc[Add a Custom Role].
-  *** To remove roles from the list, xref:rancher-admin/users/authn-and-authz/manage-role-based-access-control-rbac/locked-roles.adoc[Lock/Unlock Roles].
+  *** To add roles to the list, {xref-custom-roles}[Add a Custom Role].
+  *** To remove roles from the list, {xref-locked-roles}[Lock/Unlock Roles].
 
 +
 ====

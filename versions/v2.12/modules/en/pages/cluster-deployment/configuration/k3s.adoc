@@ -9,10 +9,20 @@ endif::[]
 ifeval::["{build-type}" != "community"]
 :xref-arch-com-ds-cluster: xref:about-rancher/architecture/communicating-with-downstream-clusters.adoc
 :xref-arch-rec: xref:about-rancher/architecture/recommendations.adoc
+:xref-ds-backup-restore: xref:cluster-admin/backups-and-restore/backups-and-restore.adoc
+:xref-psact: xref:security/psact.adoc
+:xref-azure-machine-configuration: xref:cluster-deployment/infra-providers/azure/machine-configuration.adoc
+:xref-digitalocean-machine-configuration: xref:cluster-deployment/infra-providers/digitalocean/machine-configuration.adoc
+:xref-aws-machine-configuration: xref:cluster-deployment/infra-providers/aws/machine-configuration.adoc
 endif::[]
 ifeval::["{build-type}" == "community"]
 :xref-arch-com-ds-cluster: xref:reference-guides/rancher-manager-architecture/communicating-with-downstream-user-clusters.adoc
 :xref-arch-rec: xref:reference-guides/rancher-manager-architecture/architecture-recommendations.adoc
+:xref-ds-backup-restore: xref:getting-started/installation-and-upgrade/upgrade-and-roll-back-kubernetes.adoc
+:xref-psact: xref:how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/psa-config-templates.adoc
+:xref-azure-machine-configuration: xref:reference-guides/cluster-configuration/downstream-cluster-configuration/machine-configuration/azure.adoc
+:xref-digitalocean-machine-configuration: xref:reference-guides/cluster-configuration/downstream-cluster-configuration/machine-configuration/digitalocean.adoc
+:xref-aws-machine-configuration: xref:reference-guides/cluster-configuration/downstream-cluster-configuration/machine-configuration/amazon-ec2.adoc
 endif::[]
 
 This section covers the configuration options that are available in Rancher for a new or existing K3s Kubernetes cluster.
@@ -56,9 +66,9 @@ To edit your cluster with YAML:
 
 This subsection covers generic machine pool configurations. For specific infrastructure provider configurations, refer to the following:
 
-* xref:cluster-deployment/infra-providers/azure/machine-configuration.adoc[Azure]
-* xref:cluster-deployment/infra-providers/digitalocean/machine-configuration.adoc[DigitalOcean]
-* xref:cluster-deployment/infra-providers/aws/machine-configuration.adoc[EC2]
+* {xref-azure-machine-configuration}[Azure]
+* {xref-digitalocean-machine-configuration}[DigitalOcean]
+* {xref-aws-machine-configuration}[EC2]
 
 [discrete]
 ===== Pool Name
@@ -103,11 +113,11 @@ Add https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/[tain
 
 The version of Kubernetes installed on your cluster nodes. Rancher packages its own version of Kubernetes based on https://github.com/rancher/hyperkube[hyperkube].
 
-For more detail, see xref:cluster-admin/backups-and-restore/backups-and-restore.adoc[Upgrading Kubernetes].
+For more detail, see {xref-ds-backup-restore}[Upgrading Kubernetes].
 
 ===== Pod Security Admission Configuration Template
 
-The default xref:security/psact.adoc[pod security admission configuration template] for the cluster.
+The default {xref-psact}[pod security admission configuration template] for the cluster.
 
 ===== Encrypt Secrets
 

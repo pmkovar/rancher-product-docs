@@ -11,7 +11,7 @@ ifeval::["{build-type}" != "community"]
 :xref-cluster-deployment: xref:cluster-deployment/cluster-deployment.adoc
 endif::[]
 ifeval::["{build-type}" == "community"]
-:xref-use-windows-clusters: xref:how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/use-windows-clusters/use-windows-clusters.adoc
+:xref-use-windows-clusters: xref:how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/use-windows-clusters/index.adoc
 :xref-cluster-deployment: xref:how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/index.adoc
 endif::[]
 
@@ -87,7 +87,7 @@ In a Kubernetes Install, if you elect to use the Rancher default self-signed TLS
 
 [NOTE]
 ====
-Recent changes to cert-manager require an upgrade. If you are upgrading Rancher and using a version of cert-manager older than v0.12.0, please see our xref:installation-and-upgrade/resources/upgrade-cert-manager.adoc[upgrade documentation].
+Recent changes to cert-manager require an upgrade. If you are upgrading Rancher and using a version of cert-manager older than v0.12.0, please see our {xref-upgrade-certmanager}[upgrade documentation].
 ====
 
 +
@@ -306,7 +306,7 @@ The workstation must have Docker 18.02+ in order to support manifests, which are
 
 [NOTE]
 ====
-Recent changes to cert-manager require an upgrade. If you are upgrading Rancher and using a version of cert-manager older than v0.12.0, please see our xref:installation-and-upgrade/resources/upgrade-cert-manager.adoc[upgrade documentation].
+Recent changes to cert-manager require an upgrade. If you are upgrading Rancher and using a version of cert-manager older than v0.12.0, please see our {xref-upgrade-certmanager}[upgrade documentation].
 ====
 
 +

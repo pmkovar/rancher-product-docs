@@ -8,10 +8,22 @@
 ifeval::["{build-type}" != "community"]
 :xref-experimental-features: xref:rancher-admin/experimental-features/experimental-features.adoc
 :xref-global-permissions: xref:rancher-admin/users/authn-and-authz/manage-role-based-access-control-rbac/global-permissions.adoc
+:xref-logging: xref:observability/logging/logging.adoc
+:xref-air-gap: xref:installation-and-upgrade/other-installation-methods/air-gapped/air-gapped.adoc
+:xref-tls-secrets: xref:installation-and-upgrade/resources/tls-secrets.adoc
+:xref-enable-api-audit-log: xref:observability/logging/enable-api-audit-log.adoc
+:xref-bootstrap-password: xref:installation-and-upgrade/resources/bootstrap-password.adoc
+:xref-tls-settings: xref:installation-and-upgrade/references/tls-settings.adoc
 endif::[]
 ifeval::["{build-type}" == "community"]
-:xref-experimental-features: xref:how-to-guides/advanced-user-guides/enable-experimental-features/enable-experimental-features.adoc
+:xref-experimental-features: xref:how-to-guides/advanced-user-guides/enable-experimental-features/index.adoc
 :xref-global-permissions: xref:how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/manage-role-based-access-control-rbac/global-permissions.adoc 
+:xref-logging: xref:integrations-in-rancher/logging/index.adoc
+:xref-air-gap: xref:getting-started/installation-and-upgrade/other-installation-methods/air-gapped-helm-cli-install/index.adoc
+:xref-tls-secrets: xref:getting-started/installation-and-upgrade/resources/add-tls-secrets.adoc
+:xref-enable-api-audit-log: xref:how-to-guides/advanced-user-guides/enable-api-audit-log.adoc
+:xref-bootstrap-password: xref:getting-started/installation-and-upgrade/resources/bootstrap-password.adoc
+:xref-tls-settings: xref:getting-started/installation-and-upgrade/installation-references/tls-settings.adoc
 endif::[]
 
 This page is a configuration reference for the Rancher Helm chart.
@@ -87,7 +99,7 @@ For information on enabling experimental features, refer to {xref-experimental-f
 
 | `auditLog.level`
 | 0
-| `int` - set the xref:observability/logging/enable-api-audit-log.adoc[API Audit Log] level. 0 is off. [0-3]
+| `int` - set the {xref-enable-api-audit-log}[API Audit Log] level. 0 is off. [0-3]
 |
 
 | `auditLog.maxAge`
@@ -223,22 +235,22 @@ For information on enabling experimental features, refer to {xref-experimental-f
 
 === Bootstrap Password
 
-You can xref:installation-and-upgrade/resources/bootstrap-password.adoc[set a specific bootstrap password] during Rancher installation. If you don't set a specific bootstrap password, Rancher randomly generates a password for the first admin account.
+You can {xref-bootstrap-password}[set a specific bootstrap password] during Rancher installation. If you don't set a specific bootstrap password, Rancher randomly generates a password for the first admin account.
 
-When you log in for the first time, use the bootstrap password you set to log in. If you did not set a bootstrap password, the Rancher UI shows commands that can be used to xref:installation-and-upgrade/resources/bootstrap-password.adoc#_retrieving_the_bootstrap_password[retrieve the bootstrap password]. Run those commands and log in to the account. After you log in for the first time, you are asked to reset the admin password.
+When you log in for the first time, use the bootstrap password you set to log in. If you did not set a bootstrap password, the Rancher UI shows commands that can be used to {xref-bootstrap-password}#_retrieving_the_bootstrap_password[retrieve the bootstrap password]. Run those commands and log in to the account. After you log in for the first time, you are asked to reset the admin password.
 
 === API Audit Log
 
-Enabling the xref:observability/logging/enable-api-audit-log.adoc[API Audit Log].
+Enabling the {xref-enable-api-audit-log}[API Audit Log].
 
-You can collect this log as you would any container log. Enable xref:observability/logging/logging.adoc[logging] for the `System` Project on the Rancher server cluster.
+You can collect this log as you would any container log. Enable {xref-logging}[logging] for the `System` Project on the Rancher server cluster.
 
 [,plain]
 ----
 --set auditLog.level=1
 ----
 
-By default enabling Audit Logging will create a sidecar container in the Rancher pod. This container (`rancher-audit-log`) will stream the log to `stdout`. You can collect this log as you would any container log. When using the sidecar as the audit log destination, the `hostPath`, `maxAge`, `maxBackups`, and `maxSize` options do not apply. It's advised to use your OS or Docker daemon's log rotation features to control disk space use. Enable xref:observability/logging/logging.adoc[logging] for the Rancher server cluster or System Project.
+By default enabling Audit Logging will create a sidecar container in the Rancher pod. This container (`rancher-audit-log`) will stream the log to `stdout`. You can collect this log as you would any container log. When using the sidecar as the audit log destination, the `hostPath`, `maxAge`, `maxBackups`, and `maxSize` options do not apply. It's advised to use your OS or Docker daemon's log rotation features to control disk space use. Enable {xref-logging}[logging] for the Rancher server cluster or System Project.
 
 Set the `auditLog.destination` to `hostPath` to forward logs to volume shared with the host system instead of streaming to a sidecar container. When setting the destination to `hostPath` you may want to adjust the other auditLog parameters for log rotation.
 
@@ -262,7 +274,7 @@ Consider an example that uses the `name`, `valueFrom.secretKeyRef.name`, and `va
 
 When you install Rancher inside of a Kubernetes cluster, TLS is offloaded at the cluster's ingress controller. The possible TLS settings depend on the used ingress controller.
 
-See xref:installation-and-upgrade/references/tls-settings.adoc[TLS settings] for more information and options.
+See {xref-tls-settings}[TLS settings] for more information and options.
 
 === Import `local` Cluster
 
@@ -366,7 +378,7 @@ kubectl -n cattle-system create secret generic tls-ca-additional --from-file=ca-
 
 === Private Registry and Air Gap Installs
 
-For details on installing Rancher with a private registry, see the xref:installation-and-upgrade/other-installation-methods/air-gapped/air-gapped.adoc[air gap installation docs.]
+For details on installing Rancher with a private registry, see the {xref-air-gap}[air gap installation docs.]
 
 == External TLS Termination
 
@@ -377,7 +389,7 @@ You may terminate the SSL/TLS on a L7 load balancer external to the Rancher clus
 [NOTE]
 ====
 
-If you are using a Private CA signed certificate (or if `agent-tls-mode` is set to `strict`), add `--set privateCA=true` and see xref:installation-and-upgrade/resources/tls-secrets.adoc[Adding TLS Secrets - Using a Private CA Signed Certificate] to add the CA cert for Rancher.
+If you are using a Private CA signed certificate (or if `agent-tls-mode` is set to `strict`), add `--set privateCA=true` and see {xref-tls-secrets}[Adding TLS Secrets - Using a Private CA Signed Certificate] to add the CA cert for Rancher.
 ====
 
 

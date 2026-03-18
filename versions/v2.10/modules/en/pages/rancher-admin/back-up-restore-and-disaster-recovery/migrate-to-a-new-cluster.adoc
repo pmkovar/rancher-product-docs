@@ -7,17 +7,21 @@
 ifeval::["{build-type}" != "community"]
 :url-k3s-installation: https://documentation.suse.com/cloudnative/k3s/latest/en/installation/installation.html
 :xref-install-rancher: xref:installation-and-upgrade/install-rancher.adoc
+:xref-backup-cluster: xref:rancher-admin/back-up-restore-and-disaster-recovery/back-up.adoc
+:xref-ds-backup-restore: xref:cluster-admin/backups-and-restore/backups-and-restore.adoc
 endif::[]
 ifeval::["{build-type}" == "community"]
 :url-k3s-installation: https://docs.k3s.io/installation
 :xref-install-rancher: xref:getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster/index.adoc
+:xref-backup-cluster: xref:how-to-guides/new-user-guides/backup-restore-and-disaster-recovery/back-up-rancher.adoc
+:xref-ds-backup-restore: xref:getting-started/installation-and-upgrade/upgrade-and-roll-back-kubernetes.adoc
 endif::[]
 
 If you are migrating Rancher to a new Kubernetes cluster, you don't need to install Rancher on the new cluster first. If Rancher is restored to a new cluster with Rancher already installed, it can cause problems.
 
 == Prerequisites
 
-These instructions assume that you have xref:rancher-admin/back-up-restore-and-disaster-recovery/back-up.adoc[created a backup] and  already installed a new Kubernetes cluster where Rancher will be deployed. The backup is specific to the Rancher application and can only migrate the Rancher application.
+These instructions assume that you have {xref-backup-cluster}[created a backup] and  already installed a new Kubernetes cluster where Rancher will be deployed. The backup is specific to the Rancher application and can only migrate the Rancher application.
 
 [CAUTION]
 ====
@@ -203,7 +207,7 @@ kubectl edit clusters.management.cattle.io local
 . Remove the entire `spec.rke2Config` or `spec.k3sConfig` map, if present.
 . Save the changes.
 
-Note that removing `spec.rke2Config` or `spec.k3sConfig` will erase your distribution-specific upgrade configuration for the local cluster. It can be xref:cluster-admin/backups-and-restore/backups-and-restore.adoc[reconfigured] if the new distribution is configurable for the local cluster.
+Note that removing `spec.rke2Config` or `spec.k3sConfig` will erase your distribution-specific upgrade configuration for the local cluster. It can be {xref-ds-backup-restore}[reconfigured] if the new distribution is configurable for the local cluster.
 ====
 
 == 3. Install cert-manager
@@ -214,9 +218,9 @@ Follow the steps to {xref-install-rancher}#_4_install_cert_manager[install cert-
 
 Use the same version of Helm to install Rancher, that was used on the first cluster.
 
-[,bash]
+[,bash,subs="attributes+"]
 ----
-helm install rancher rancher-prime/rancher \
+helm install rancher {rancher-helm-repo}/rancher \
   --namespace cattle-system \
   --set hostname=<same hostname as the server URL from the first Rancher server> \
   --version x.y.z
@@ -234,9 +238,9 @@ helm get values rancher -n cattle-system -o yaml > rancher-values.yaml
 
 These values can be reused using the `rancher-values.yaml` file. Be sure to switch the kubeconfig to the new Rancher environment.
 
-[,bash]
+[,bash,subs="attributes+"]
 ----
-helm install rancher rancher-prime/rancher -n cattle-system -f rancher-values.yaml --version x.y.z
+helm install rancher {rancher-helm-repo}/rancher -n cattle-system -f rancher-values.yaml --version x.y.z
 ----
 ====
 

@@ -6,6 +6,14 @@ endif::[]
 :page-revdate: {revdate}
 :community-path: reference-guides/monitoring-v2-configuration/routes.adoc 
 :product-path: observability/monitoring-and-dashboards/configuration/routes.adoc
+ifeval::["{build-type}" != "community"]
+:xref-how-monitoring-works: xref:observability/monitoring-and-dashboards/how-monitoring-works.adoc
+:xref-receivers: xref:observability/monitoring-and-dashboards/configuration/receivers.adoc
+endif::[]
+ifeval::["{build-type}" == "community"]
+:xref-how-monitoring-works: xref:integrations-in-rancher/monitoring-and-alerting/how-monitoring-works.adoc
+:xref-receivers: xref:reference-guides/monitoring-v2-configuration/receivers.adoc
+endif::[]
 
 The route configuration is the section of the Alertmanager custom resource that controls how the alerts fired by Prometheus are grouped and filtered before they reach the receiver.
 
@@ -16,7 +24,7 @@ For more information about configuring routes, refer to the https://www.promethe
 [NOTE]
 ====
 
-This section assumes familiarity with how monitoring components work together. For more information, see xref:observability/monitoring-and-dashboards/how-monitoring-works.adoc[this section.]
+This section assumes familiarity with how monitoring components work together. For more information, see {xref-how-monitoring-works}[this section.]
 ====
 
 
@@ -40,7 +48,7 @@ Annotations should be used for information that does not affect who receives the
 
 === Receiver
 
-The route needs to refer to a xref:observability/monitoring-and-dashboards/configuration/receivers.adoc[receiver] that has already been configured.
+The route needs to refer to a {xref-receivers}[receiver] that has already been configured.
 
 === Grouping
 

@@ -11,6 +11,11 @@ ifeval::["{build-type}" != "community"]
 :xref-helm-chart-options: xref:installation-and-upgrade/references/helm-chart-options.adoc
 :xref-install-reqs: xref:installation-and-upgrade/requirements/requirements.adoc
 :xref-cluster-deployment: xref:cluster-deployment/cluster-deployment.adoc
+:xref-air-gap: xref:installation-and-upgrade/other-installation-methods/air-gapped/air-gapped.adoc
+:xref-migrate-cluster: xref:rancher-admin/back-up-restore-and-disaster-recovery/migrate-to-a-new-cluster.adoc
+:xref-rancher-architecture: xref:about-rancher/architecture/architecture.adoc
+:xref-tips-for-running-rancher: xref:installation-and-upgrade/best-practices/tips-for-running-rancher.adoc
+:xref-qs-aws-marketplace: xref:installation-and-upgrade/quick-start/deploy-rancher/aws-marketplace.adoc
 endif::[]
 ifeval::["{build-type}" == "community"]
 :xref-install-rancher: xref:getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster/index.adoc
@@ -18,6 +23,11 @@ ifeval::["{build-type}" == "community"]
 :xref-helm-chart-options: xref:getting-started/installation-and-upgrade/installation-references/helm-chart-options.adoc
 :xref-install-reqs: xref:getting-started/installation-and-upgrade/installation-requirements/index.adoc 
 :xref-cluster-deployment: xref:how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/index.adoc
+:xref-air-gap: xref:getting-started/installation-and-upgrade/other-installation-methods/air-gapped-helm-cli-install/index.adoc
+:xref-migrate-cluster: xref:how-to-guides/new-user-guides/backup-restore-and-disaster-recovery/migrate-rancher-to-new-cluster.adoc
+:xref-rancher-architecture: xref:reference-guides/rancher-manager-architecture/index.adoc
+:xref-tips-for-running-rancher: xref:reference-guides/best-practices/rancher-server/tips-for-running-rancher.adoc
+:xref-qs-aws-marketplace: xref:getting-started/quick-start-guides/deploy-rancher-manager/aws-marketplace.adoc
 endif::[]
 
 This section provides an overview of the architecture options of installing Rancher, describing advantages of each option.
@@ -41,7 +51,7 @@ We recommend using Helm, a Kubernetes package manager, to install Rancher on mul
 
 === Rancher on EKS Install with the AWS Marketplace
 
-Rancher can be installed on to Amazon Elastic Kubernetes Service (EKS) xref:installation-and-upgrade/quick-start/deploy-rancher/aws-marketplace.adoc[through the AWS Marketplace]. The EKS cluster deployed is production-ready and follows AWS best practices.
+Rancher can be installed on to Amazon Elastic Kubernetes Service (EKS) {xref-qs-aws-marketplace}[through the AWS Marketplace]. The EKS cluster deployed is production-ready and follows AWS best practices.
 
 === Single-node Kubernetes Install
 
@@ -53,7 +63,7 @@ However, this option is useful if you want to save resources by using a single n
 
 For test and demonstration purposes, Rancher can be installed with Docker on a single node. A local Kubernetes cluster is installed in the single Docker container, and Rancher is installed on the local cluster.
 
-The Rancher backup operator can be used to migrate Rancher from the single Docker container install to an installation on a high-availability Kubernetes cluster. For details, refer to the documentation on xref:rancher-admin/back-up-restore-and-disaster-recovery/migrate-to-a-new-cluster.adoc[migrating Rancher to a new cluster.]
+The Rancher backup operator can be used to migrate Rancher from the single Docker container install to an installation on a high-availability Kubernetes cluster. For details, refer to the documentation on {xref-migrate-cluster}[migrating Rancher to a new cluster.]
 
 === Other Options
 
@@ -71,8 +81,8 @@ There are also separate instructions for installing Rancher in an air gap enviro
 | These xref:[docs,] plus this xref:[configuration]
 
 | In an air gap environment
-| xref:installation-and-upgrade/other-installation-methods/air-gapped/air-gapped.adoc[Docs]
-| xref:installation-and-upgrade/other-installation-methods/air-gapped/air-gapped.adoc[Docs]
+| {xref-air-gap}[Docs]
+| {xref-air-gap}[Docs]
 |===
 
 We recommend installing Rancher on a Kubernetes cluster, because in a multi-node cluster, the Rancher management server becomes highly available. This high-availability configuration helps maintain consistent access to the downstream Kubernetes clusters that Rancher will manage.
@@ -85,7 +95,7 @@ Our {xref-install-rancher}[instructions for installing Rancher on Kubernetes] de
 
 When the nodes in your Kubernetes cluster are running and fulfill the {xref-install-reqs}[node requirements,] you will use Helm to deploy Rancher onto Kubernetes. Helm uses Rancher's Helm chart to install a replica of Rancher on each node in the Kubernetes cluster. We recommend using a load balancer to direct traffic to each replica of Rancher in the cluster.
 
-For a longer discussion of Rancher architecture, refer to the xref:about-rancher/architecture/architecture.adoc[architecture overview,] {xref-arch-rec}[recommendations for production-grade architecture,] or our xref:installation-and-upgrade/best-practices/tips-for-running-rancher.adoc[best practices guide.]
+For a longer discussion of Rancher architecture, refer to the {xref-rancher-architecture}[architecture overview,] {xref-arch-rec}[recommendations for production-grade architecture,] or our {xref-tips-for-running-rancher}[best practices guide.]
 
 == Prerequisites
 
