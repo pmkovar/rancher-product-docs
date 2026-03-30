@@ -2,7 +2,7 @@
 ifeval::["{build-type}" != "srfa"]
 :page-languages: [en, zh]
 endif::[]
-:revdate: 2026-03-26
+:revdate: 2026-03-30
 :page-revdate: {revdate}
 :release-version: v2.14.0
 :rn-component-version: v2.14
@@ -131,6 +131,10 @@ endif::[]
 * Fixed an issue where users without sufficient permissions could see the 'Edit Config' option for their user object in the **Users & Authentication** section. Attempting to use this option to edit values, such as a password, would result in a 'Forbidden: permission denied' error. See https://github.com/rancher/rancher/issues/49436[#49436].
 * Added additional improvements to reduce the amount of failed network requests when fetching resources shown in lists in the Rancher UI by reducing the length of the URL used in the request. This failure was more likely to happen when viewing resources in the local cluster as an administrator. See https://github.com/rancher/dashboard/issues/16215[#16215].
 * Fixed an issue where OIDC-based Auth Provider settings could be lost when upgrading from Rancher v2.12.x to v2.13.x or later. A cleanup process for unused OIDC secrets could cause the AuthConfig to be partially overwritten, leading to the loss of critical authentication settings like endpoints and client IDs. See https://github.com/rancher/rancher/issues/53995[#53995].
+
+=== Known Issues
+
+* Upgrading to Rancher v2.14.0 breaks Google OAuth SSO, causing login attempts to fail and redirect to `/dashboard/auth/login?err=client`. This is due to a regression involving `SSL_CERT_DIR` (when `tls: ingress` is used) and a type casing mismatch in the new `/v1-public` authentication endpoints. As a workaround, you can roll back to Rancher v2.13. See https://github.com/rancher/rancher/issues/54387[#54387].
 
 == Cluster Provisioning
 
