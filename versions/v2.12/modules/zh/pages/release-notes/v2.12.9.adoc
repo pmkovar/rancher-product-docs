@@ -44,88 +44,6 @@ Rancher {release-version} is the latest patch release of Rancher {rn-component-v
 
 For more information on new features in the general minor release, see the https://github.com/rancher/rancher/releases/tag/{rn-component-version}.0[{rn-component-version}.0 release notes].
 
-== Rancher General
-
-=== Major Bug Fixes
-
-* Fixed an issue where the https://scc.suse.com/home[SUSE Customer Center (SCC)] system view had a known issue regarding duplicate Rancher Manager registrations. See https://github.com/rancher/scc-operator/issues/38[rancher/scc-operator #38].
-
-== Cluster Provisioning
-
-=== Major Bug Fixes
-
-* Fixed an issue where the *Cluster* page showed the *Registration* tab when updating or upgrading a hosted cluster. See https://github.com/rancher/dashboard/issues/8524[#8524].
-
-== K3s and RKE2 Provisioning
-
-=== Known Issues
-
-* After updating an RKE2 or K3s cluster to a supported Kubernetes version, the S3 snapshot retention defaults to `5`, ignoring any previously set `snapshotRetention` values. This is caused by a known issue in RKE2 and K3s, tracked in https://github.com/k3s-io/k3s/issues/13769[#13769], which is targeted for a fix in a future KDM update. See https://github.com/rancher/rancher/issues/52710[#52710].
-
-== Rancher App (Global UI)
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== Authentication
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== Rancher Webhook
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== K3s Provisioning
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== RKE2 Provisioning
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== Backup/Restore
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== Continuous Delivery (Fleet)
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== SUSE Virtualization (Harvester)
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
 == Changes Since {previous-release-version}
 
 See the full list of https://github.com/rancher/rancher/compare/{previous-release-version}%E2%80%A6{release-version}[changes].
@@ -287,6 +205,8 @@ See https://github.com/rancher/rancher/issues/49402[#49402] for more information
 
 === Long-standing Known Issues - RKE2 Provisioning
 
+* *Rancher v2.12.8:*
+** After updating an RKE2 or K3s cluster to a supported Kubernetes version, the S3 snapshot retention defaults to `5`, ignoring any previously set `snapshotRetention` values. This is caused by a known issue in RKE2 and K3s, tracked in https://github.com/k3s-io/k3s/issues/13769[#13769], which is targeted for a fix in a future KDM update. See https://github.com/rancher/rancher/issues/52710[#52710].
 * *Rancher v2.7.7:*
 ** Due to the backoff logic in various components, downstream provisioned K3s and RKE2 clusters may take longer to re-achieve `Active` status after a migration. If you see that a downstream cluster is still updating or in an error state immediately after a migration, please let it attempt to resolve itself. This might take up to an hour to complete. See https://github.com/rancher/rancher/issues/34518[#34518] and https://github.com/rancher/rancher/issues/42834[#42834].
 * *Rancher v2.7.6:*
@@ -294,6 +214,8 @@ See https://github.com/rancher/rancher/issues/49402[#49402] for more information
 
 === Long-standing Known Issues - K3s Provisioning
 
+* *Rancher v2.12.8:*
+** After updating an RKE2 or K3s cluster to a supported Kubernetes version, the S3 snapshot retention defaults to `5`, ignoring any previously set `snapshotRetention` values. This is caused by a known issue in RKE2 and K3s, tracked in https://github.com/k3s-io/k3s/issues/13769[#13769], which is targeted for a fix in a future KDM update. See https://github.com/rancher/rancher/issues/52710[#52710].
 * *Rancher v2.7.6:*
 ** Provisioning RKE2/K3s clusters with added (not built-in) custom node drivers causes provisioning to fail. As a workaround, https://github.com/rancher/rancher/issues/37074#issuecomment-1664722305[fix] the added node drivers after activating. See https://github.com/rancher/rancher/issues/37074[#37074].
 * *Rancher v2.7.2:*
