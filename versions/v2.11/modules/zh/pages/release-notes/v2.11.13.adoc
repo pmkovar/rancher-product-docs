@@ -33,90 +33,6 @@ Rancher {release-version} is the latest patch release of Rancher {rn-component-v
 
 For more information on new features in the general minor release, see the https://github.com/rancher/rancher/releases/tag/{rn-component-version}.0[{rn-component-version}.0 release notes].
 
-== Cluster Provisioning
-
-=== Major Bug Fixes
-
-* Fixed an issue where the *Cluster* page showed the *Registration* tab when updating or upgrading a hosted cluster. See https://github.com/rancher/dashboard/issues/8524[#8524].
-
-== K3s and RKE2 Provisioning
-
-=== Known Issues
-
-* After updating an RKE2 or K3s cluster to a supported Kubernetes version, the S3 snapshot retention defaults to `5`, ignoring any previously set `snapshotRetention` values. This is caused by a known issue in RKE2 and K3s, tracked in https://github.com/k3s-io/k3s/issues/13769[#13769], which is targeted for a fix in a future KDM update. See https://github.com/rancher/rancher/issues/52710[#52710].
-
-== Rancher General
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== Rancher App (Global UI)
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== Authentication
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== Rancher Webhook
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== K3s Provisioning
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== RKE2 Provisioning
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== Backup/Restore
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== Continuous Delivery (Fleet)
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
-== SUSE Virtualization (Harvester)
-
-=== Features and Enhancements
-
-=== Major Bug Fixes
-
-=== Known Issues
-
 == Changes Since {previous-release-version}
 
 See the full list of https://github.com/rancher/rancher/compare/{previous-release-version}%E2%80%A6{release-version}[changes].
@@ -265,6 +181,8 @@ See https://github.com/rancher/rancher/issues/39525[#39525].
 
 === Long-standing Known Issues - RKE2 Provisioning
 
+* *Rancher v2.11.12:*
+** After updating an RKE2 or K3s cluster to a supported Kubernetes version, the S3 snapshot retention defaults to `5`, ignoring any previously set `snapshotRetention` values. This is caused by a known issue in RKE2 and K3s, tracked in https://github.com/k3s-io/k3s/issues/13769[#13769], which is targeted for a fix in a future KDM update. See https://github.com/rancher/rancher/issues/52710[#52710].
 * *Rancher v2.9.0:*
 ** When adding the `provisioning.cattle.io/allow-dynamic-schema-drop` annotation through the cluster config UI, the annotation disappears before adding the value field. When viewing the YAML, the respective value field is not updated and is displayed as an empty string. As a workaround, when creating the cluster, set the annotation by using the *Edit Yaml* option located in the dropdown *⋮* attached to your respective cluster in the *Cluster Management* view. See https://github.com/rancher/dashboard/issues/13655[#13655].
 * *Rancher v2.7.7:*
