@@ -68,6 +68,7 @@ For more details, see https://github.com/rancher/rancher/issues/52403[#52403].
 * To simplify the Rancher Helm chart, support and version-checking code for End-of-Life (EOL) and unsupported versions of cert-manager have been removed. The Rancher chart now only supports cert-manager versions that are compatible with the Kubernetes versions supported by Rancher. See https://github.com/rancher/rancher/issues/52922[#52922].
 * Rancher v2.14 adds support for switching from ingress to Gateway API when installing the Rancher Helm chart. Note that when using the Gateway API network exposure type, Rancher can create and manage its own Gateway resource. However, if you have an existing Gateway that you manage independently (for example, a shared Gateway used by multiple applications), you will need to create your own HTTPRoute resources to route traffic to Rancher. For more information, refer to https://ranchermanager.docs.rancher.com/how-to-guides/advanced-user-guides/rancher-deployment-guides/configure-with-existing-gateway/[Using an External Gateway with Rancher]. See https://github.com/rancher/rancher/issues/52796[#52796].
 * Rancher v2.14 now allows users to add custom labels and annotations to Rancher namespaces. At install time, users can provide their custom labels and annotations to the Rancher Helm chart. These labels and annotations are then applied to namespaces as they are created. This applies both to management and downstream clusters and helps identify namespaces necessary for Rancher to operate properly. See https://github.com/rancher/rancher/issues/53268[#53268].
+* Rancher Charts now use `rancher/kuberlr-kubectl` instead of `rancher/kubectl`. The new image is functionally equivalent but provides greater Kubernetes version compatibility. If you need to preserve the use of `rancher/kubectl`, you can override it by modifying the chart's `.values`. See https://github.com/rancher/rancher/issues/48614[#48614].
 
 === Behavior Changes
 
@@ -76,30 +77,14 @@ For more details, see https://github.com/rancher/rancher/issues/52403[#52403].
 
 === Major Bug Fixes
 
-* Fixed an issue where upgrading Rancher from v2.13.2 to v2.14 caused Rancher pods to enter a `CrashLoopBackOff` state and fail to start. See https://github.com/rancher/rancher/issues/53854[#53854].
-* **Support for custom claim mapping in Keycloak OIDC.** The custom claim mechanism for Keycloak OIDC now works as expected. For custom names, the display name will come from the `name` claim if populated - the preference order for display names is:
-+
-[arabic]
-.. The "name" claim or **custom** "name" claim.
-.. The "email" claim, or **custom** "email claim".
-+
-For groups, this may lead to additional permissions for newly detected groups claims. See https://github.com/rancher/rancher/issues/52405[#52405].
-ifeval::["{build-type}" != "community"]
-* Fixed an issue where the https://scc.suse.com/home[SUSE Customer Center (SCC)] system view had a known issue regarding duplicate Rancher Manager registrations. See https://github.com/rancher/scc-operator/issues/38[rancher/scc-operator #38].
-endif::[]
-
 == Rancher App (Global UI)
 
 === Features and Enhancements
 
-- In the Azure Cluster Provisioning form, the **Use managed disks** option for the Azure node driver now defaults to `true`. This change aligns with Azure's guidance around the deprecation of unmanaged disks. See https://github.com/rancher/dashboard/issues/16184[#16184] and the related https://learn.microsoft.com/en-us/azure/virtual-machines/unmanaged-disks-deprecation[Azure documentation].
+- In the Azure Cluster Provisioning form, the **Use managed disks** option for the Azure node driver now defaults to `true`. This change aligns with Azure's guidance around the deprecation of unmanaged disks. See https://github.com/rancher/dashboard/issues/16184[#16184], https://github.com/rancher/rancher/issues/52464[#52464], and the related https://learn.microsoft.com/en-us/azure/virtual-machines/unmanaged-disks-deprecation[Azure documentation].
 - Rancher now supports managing audit policies in the UI, under *Policy* > *Audit Log Policies*. See https://github.com/rancher/dashboard/issues/12961[#12961].
 
 === Major Bug Fixes
-
-- Fixed an issue where the legacy `/v3/` API-UI page failed to load, resulting in a blank page and console errors when users attempted to access it via the host URL `<RANCHER-SERVER-URL>/v3`. See https://github.com/rancher/rancher/issues/52911[#52911].
-- Lists showing Custom Resources with Age columns of type Date are now correctly handled, similarly to other Age columns. See https://github.com/rancher/dashboard/issues/15711[#15711].
-- Fixed an issue when a standard user with the Cluster Owner role attempted to edit an Azure or AKS cluster, the Machine Pools section showed an error `Cannot read properties of undefined...`. See https://github.com/rancher/dashboard/issues/15241[#15241].
 
 == Rancher CLI
 
@@ -126,11 +111,6 @@ endif::[]
 
 === Major Bug Fixes
 
-* Fixed an issue where the selection of pods in the Rancher UI (*Workloads > Pods*) would reset when the status of a pod changed. See https://github.com/rancher/dashboard/issues/15847[#15847].
-* Fixed an issue where users without sufficient permissions could see the 'Edit Config' option for their user object in the **Users & Authentication** section. Attempting to use this option to edit values, such as a password, would result in a 'Forbidden: permission denied' error. See https://github.com/rancher/rancher/issues/49436[#49436].
-* Added additional improvements to reduce the amount of failed network requests when fetching resources shown in lists in the Rancher UI by reducing the length of the URL used in the request. This failure was more likely to happen when viewing resources in the local cluster as an administrator. See https://github.com/rancher/dashboard/issues/16215[#16215].
-* Fixed an issue where OIDC-based Auth Provider settings could be lost when upgrading from Rancher v2.12.x to v2.13.x or later. A cleanup process for unused OIDC secrets could cause the AuthConfig to be partially overwritten, leading to the loss of critical authentication settings like endpoints and client IDs. See https://github.com/rancher/rancher/issues/53995[#53995].
-
 == Cluster Provisioning
 
 === Features and Enhancements
@@ -152,12 +132,6 @@ For more information on installing and using Rancher Turtles, refer to the https
 
 === Major Bug Fixes
 
-- Fixed an issue where the `capi-controller-manager` image was not properly pulled and failed to come up as `Active` when installing Rancher in an air-gapped environment. See https://github.com/rancher/rancher/issues/52816[#52816].
-- Fixed an issue where users were unable to provision or import downstream EKS clusters in an IPv6 Rancher environment. See https://github.com/rancher/rancher/issues/52154[#52154].
-- Fixed an issue where users were unable to successfully provision downstream K3s custom or node-driver clusters in an IPv6-only environment. In these scenarios, the clusters would get stuck during the provisioning process and fail to reach an `Active` state. See https://github.com/rancher/rancher/issues/51990[#51990].
-- Fixed an issue where the `rke2-server` service on etcd-only nodes would continuously crash with a "failed to get runtime classes" fatal error when provisioning an IPv6-only RKE2 custom cluster. This caused the etcd node to get stuck repeatedly flipping between `Waiting for Node Ref` and `Reconciling` states. See https://github.com/rancher/rancher/issues/51851[#51851].
-- Fixed an issue where the *Cluster* page showed the *Registration* tab when updating or upgrading a hosted cluster. See https://github.com/rancher/dashboard/issues/8524[#8524].
-
 == K3s and RKE2 Provisioning
 
 === Features and Enhancements
@@ -172,6 +146,14 @@ This method is distinct from provisioning using Rancher Turtles, for example, th
 Note that these clusters cannot yet be provisioned via the Rancher UI, and the cluster management UI is https://github.com/rancher/dashboard/issues/16679[disabled] for them (UI for exploring the cluster resources remains available).
 +
 For examples on how to create clusters using this method with CAPA and CAPV, refer to the https://ranchermanager.docs.rancher.com/how-to-guides/advanced-user-guides/capi-infrastructure-providers[documentation].
+
+=== Behavior Changes
+
+* The v1alpha1 API in CAPRKE2 (cluster-api-provider-rke2) is deprecated. For more details, see https://github.com/rancher/cluster-api-provider-rke2/issues/797[rancher/cluster-api-provider-rke2#797] and https://github.com/rancher/rancher/issues/53369[#53369].
+
+=== Major Bug Fixes
+
+* Fixed an issue where etcd nodes in K3s and RKE2 node driver clusters could get stuck in a `Reconciling` state and fail to delete. See https://github.com/rancher/rancher/issues/38926[#38926].
 
 === Known Issues
 
