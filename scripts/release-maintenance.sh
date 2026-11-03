@@ -39,7 +39,7 @@ Examples:
     $ ./scripts/$(basename "$0") -v v2.15.3 -d "2026-11-03"
 
   Or, provide the version and component versions manually:
-    $ ./scripts/$(basename "$0") -v v2.15.3 -d "2026-11-03" -a 110.0.1+up10.0.1 -w 0.11.4 -T 110.0.4+up0.27.4-rc.0 -F 110.0.3+up0.16.3-rc.2
+    $ ./scripts/$(basename "$0") -v v2.15.3 -d "2026-10-28" -a 110.0.1+up10.0.1 -w 0.11.4 -T 110.0.4+up0.27.4-rc.0 -F 110.0.3+up0.16.3-rc.2
 
 Options:
   -v <version>          The new Rancher version (e.g., v2.15.3). (Required)
@@ -157,28 +157,22 @@ fetch_charts_data() {
   if is_csp_adapter_supported "$minor_ver"; then
     local index_yaml_url="https://raw.githubusercontent.com/rancher/charts/refs/heads/${charts_branch}/index.yaml"
     echo "-> Fetching rancher-csp-adapter version from rancher/charts index.yaml..."
-    ADAPTER_VERSION=$(python3 -c "
-import urllib.request, re, sys
-req = urllib.request.Request('${index_yaml_url}', headers={'User-Agent': 'Mozilla/5.0'})
-try:
-    with urllib.request.urlopen(req) as resp:
-        found = False
-        for line in resp:
-            line_str = line.decode('utf-8', errors='ignore')
-            if not found and line_str.startswith('  rancher-csp-adapter:'):
-                found = True
-                continue
-            if found:
-                if re.match(r'^  [a-zA-Z0-9_-]+:', line_str):
-                    break
-                m = re.search(r'^\s*version:\s*[\"\'\x27]?([^\s\"\'\x27]+)', line_str)
-                if m:
-                    print(m.group(1))
-                    sys.exit(0)
-except Exception as e:
-    sys.stderr.write(f'Error fetching index.yaml: {e}\n')
-    sys.exit(1)
-")
+    local index_yaml_content
+    index_yaml_content=$(curl -sSfL "$index_yaml_url")
+    if [[ $? -ne 0 ]] || [[ -z "$index_yaml_content" ]]; then
+      echo "Error: Failed to fetch or empty content from $index_yaml_url" >&2
+      exit 1
+    fi
+
+    ADAPTER_VERSION=$(echo "$index_yaml_content" | awk '
+      /^  rancher-csp-adapter:/ { in_chart=1; next }
+      in_chart && /^  [a-zA-Z0-9_-]+:/ { in_chart=0 }
+      in_chart && /^[[:space:]]*version:/ && !ver {
+        gsub(/["\047]/, "", $2)
+        ver=$2
+      }
+      END { print ver }
+    ')
     if [[ -z "$ADAPTER_VERSION" ]]; then
       echo "Error: Could not parse rancher-csp-adapter version from index.yaml" >&2
       exit 1
